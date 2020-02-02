@@ -16,13 +16,13 @@ namespace R5T.Soltana
     {
         SolutionFile CreateNew();
 
-        void Add(SolutionFile solutionFile, string solutionFilePath, string projectFilePath);
+        void AddProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath);
 
-        void Remove(SolutionFile solutionFile, string solutionFilePath, string projectFilePath);
+        void RemoveProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath);
 
         /// <summary>
         /// Lists project file paths in the solution.
         /// </summary>
-        IEnumerable<string> List(SolutionFile solutionFile, string solutionFilePath);
+        IEnumerable<string> ListProjectFiles(SolutionFile solutionFile, string solutionFilePath);
     }
 }
