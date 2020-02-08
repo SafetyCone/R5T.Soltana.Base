@@ -5,7 +5,7 @@ using System.Linq;
 using R5T.Cambridge.Types;
 
 
-namespace R5T.Soltana
+namespace R5T.Soltana.Extensions
 {
     public static class IVisualStudioSolutionFileOperatorExtensions
     {
@@ -44,7 +44,7 @@ namespace R5T.Soltana
             return projectFileSpecifications;
         }
 
-        public static IEnumerable<string> ListProjectFileReferences(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFile solutionFile, string solutionFilePath)
+        public static IEnumerable<string> ListProjectFilePaths(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFile solutionFile, string solutionFilePath)
         {
             var projectFileSpecifications = visualStudioSolutionFileOperator.ListProjectFileReferences(solutionFile, solutionFilePath);
 
@@ -54,7 +54,7 @@ namespace R5T.Soltana
 
         public static IEnumerable<string> ListProjectFilePaths(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFileSite solutionFileSite)
         {
-            var projectFilePaths = ListProjectFileReferences(visualStudioSolutionFileOperator, solutionFileSite.SolutionFile, solutionFileSite.SolutionFilePath);
+            var projectFilePaths = visualStudioSolutionFileOperator.ListProjectFilePaths(solutionFileSite.SolutionFile, solutionFileSite.SolutionFilePath);
             return projectFilePaths;
         }
 
