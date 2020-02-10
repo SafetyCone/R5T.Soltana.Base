@@ -20,9 +20,9 @@ namespace R5T.Soltana
     {
         SolutionFile CreateNewSolutionFile();
 
-        void AddProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath, Guid projectTypeGuid);
+        void AddProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath, Guid projectTypeGuid, Guid projectGuid);
 
-        bool HasProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath);
+        bool HasProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath, out SolutionFileProjectFileReference projectFileReference);
 
         bool RemoveProjectFile(SolutionFile solutionFile, string solutionFilePath, string projectFilePath);
 
@@ -30,5 +30,23 @@ namespace R5T.Soltana
         /// Lists solution project file references, NOT including any solution folders.
         /// </summary>
         IEnumerable<SolutionFileProjectFileReference> ListProjectFileReferences(SolutionFile solutionFile, string solutionFilePath);
+
+        void AddSolutionFolder(SolutionFile solutionFile, string solutionFolderPath);
+
+        bool HasSolutionFolder(SolutionFile solutionFile, string solutionFolderPath, out SolutionFileProjectReference solutionFolder);
+
+        bool RemoveSolutionFolderAndContents(SolutionFile solutionFile, string solutionFolderPath);
+
+        void MoveProjectFileIntoSolutionFolder(SolutionFile solutionFile, string solutionFilePath, string projectFilePath, string solutionFolderPath);
+
+        void MoveProjectFileOutOfSolutionFolder(SolutionFile solutionFile, string solutionFilePath, string projectFilePath, string solutionFolderPath);
+
+        IEnumerable<SolutionFileProjectFileReference> ListRootProjectFiles(SolutionFile solutionFile, string solutionFilePath);
+
+        IEnumerable<SolutionFileProjectFileReference> ListSolutionFolderProjectFiles(SolutionFile solutionFile, string solutionFilePath, string solutionFolderPath);
+
+        IEnumerable<SolutionFileProjectReference> ListRootSolutionFolders(SolutionFile solutionFile);
+
+        IEnumerable<SolutionFileProjectReference> ListSolutionFolderSolutionFolders(SolutionFile solutionFile, string solutionFolderPath);
     }
 }
