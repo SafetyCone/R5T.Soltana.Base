@@ -21,6 +21,13 @@ namespace R5T.Soltana.Extensions
             return solutionFileSite;
         }
 
+        public static void AddProjectFile(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFile solutionFile, string solutionFilePath, string projectFilePath, Guid projectTypeGuid)
+        {
+            var newProjectGuid = Guid.NewGuid();
+
+            visualStudioSolutionFileOperator.AddProjectFile(solutionFile, solutionFilePath, projectFilePath, projectTypeGuid, newProjectGuid);
+        }
+
         public static void AddProjectFile(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFileSite solutionFileSite, string projectFilePath, Guid projectTypeGuid)
         {
             visualStudioSolutionFileOperator.AddProjectFile(solutionFileSite.SolutionFile, solutionFileSite.SolutionFilePath, projectFilePath, projectTypeGuid);
@@ -28,7 +35,7 @@ namespace R5T.Soltana.Extensions
 
         public static bool HasProjectFile(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFileSite solutionFileSite, string projectFilePath)
         {
-            var hasProjectFile = visualStudioSolutionFileOperator.HasProjectFile(solutionFileSite.SolutionFile, solutionFileSite.SolutionFilePath, projectFilePath);
+            var hasProjectFile = visualStudioSolutionFileOperator.HasProjectFile(solutionFileSite.SolutionFile, solutionFileSite.SolutionFilePath, projectFilePath, out _);
             return hasProjectFile;
         }
 
@@ -71,9 +78,31 @@ namespace R5T.Soltana.Extensions
             var projectFileSpecification = visualStudioSolutionFileOperator.GetProjectFileSpecification(solutionFileSite.SolutionFile, solutionFileSite.SolutionFilePath, projectFilePath);
             return projectFileSpecification;
         }
+        
+        public static bool SolutionFolderContainsChildSolutionFolder(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFile solutionFile, string parentSolutionFolderPath, string childSolutionFolderName, out SolutionFileProjectReference childSolutionFolder)
+        {
+            var childSolutionFolders = visualStudioSolutionFileOperator.ListSolutionFolderSolutionFolders(solutionFile, parentSolutionFolderPath);
 
-        // Include adding a solution folder?
+            childSolutionFolder = childSolutionFolders.Where(x => x.ProjectName == childSolutionFolderName).SingleOrDefault();
 
-        // Add 
+            var childSolutionFolderExists = childSolutionFolder != default;
+            return childSolutionFolderExists;
+        }
+
+        public static bool SolutionFolderContainsProjectFile(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFile solutionFile, string solutionFilePath, string projectFilePath, string solutionFolderPath, out SolutionFileProjectFileReference childProjectFileReference)
+        {
+            var childProjectFileReferences = visualStudioSolutionFileOperator.ListSolutionFolderProjectFiles(solutionFile, solutionFilePath, solutionFolderPath);
+
+            childProjectFileReference = childProjectFileReferences.Where(x => x.ProjectFilePathValue == projectFilePath).SingleOrDefault();
+
+            var childProjectFileExists = childProjectFileReference != default;
+            return childProjectFileExists;
+        }
+
+        public static void MoveProjectFileBetweenFolders(this IVisualStudioSolutionFileOperator visualStudioSolutionFileOperator, SolutionFile solutionFile, string solutionFilePath, string projectFilePath, string sourceSolutionFolderPath, string destinationSolutionFolderPath)
+        {
+            visualStudioSolutionFileOperator.MoveProjectFileOutOfSolutionFolder(solutionFile, solutionFilePath, projectFilePath, sourceSolutionFolderPath);
+            visualStudioSolutionFileOperator.MoveProjectFileIntoSolutionFolder(solutionFile, solutionFilePath, projectFilePath, destinationSolutionFolderPath);
+        }
     }
 }
