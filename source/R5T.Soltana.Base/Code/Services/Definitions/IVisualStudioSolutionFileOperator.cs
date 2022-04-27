@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-using R5T.Cambridge.Types;
+using R5T.Cambridge.Types;using R5T.T0064;
 
 
 namespace R5T.Soltana
-{
+{[ServiceDefinitionMarker]
     /// <summary>
     /// A service for operating on (in-memory) <see cref="SolutionFile"/> instances.
     /// The <see cref="R5T.Soltana.IVisualStudioSolutionFileOperator"/> service:
@@ -16,7 +16,7 @@ namespace R5T.Soltana
     /// <remarks>
     /// Throughout, a solution file path is required to turn relative paths in the solution file into absolute project file paths.
     /// </remarks>
-    public interface IVisualStudioSolutionFileOperator
+    public interface IVisualStudioSolutionFileOperator:IServiceDefinition
     {
         SolutionFile CreateNewSolutionFile();
 
